@@ -42,7 +42,6 @@ class BankApp:
                 print("account has been created!!")
                 print("=========================================")
                 print(self.users)
-                # create a json file to save user data
                 with open('mydata.json', 'w') as f:
                     json.dump(self.users, f)
         else:
@@ -57,13 +56,13 @@ class BankApp:
         email = input("input email address: ").lower()
         # check if user exists or not
         # open json and read file
-        f = open('mydata.json')
-        read = json.load(f)
-        if email not in self.users.keys():
+        with open('mydata.json') as json_file:
+            data = json.load(json_file)
+        if email not in data:
             print("Sorry you are not authorized! \n Kindly create account")
         else:
             password = input("Enter password: ")
-            if password == self.users[email]["password"] or self.users[email]["password"] in read:
+            if password == self.users[email]["password"] and self.users[email]["password"] in data:
                 print("Welcom!!!")
                 print("Please proceed to select a transaction type")
                 print("=========================================\n=========================================")
@@ -170,9 +169,9 @@ class BankApp:
         recipient = input("Please enter the email of the beneficiary: ")
         # check if benefiaciary exists or not
         # open json and read file
-        f = open('mydata.json')
-        read = json.load(f)
-        if recipient not in self.users.keys() or recipient not in read:
+        with open('data.txt') as json_file:
+            data = json.load(json_file)
+        if recipient not in data:
             print("Beneficiary account does not exist, Please try again")
             self.transfer(email)
         transfer_amount = float(input("Enter amount to be Transferred: "))
