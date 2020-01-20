@@ -1,11 +1,4 @@
-import hashlib
-import getpass
 import json
-
-
-
-
-
 
 
 class BankApp:
