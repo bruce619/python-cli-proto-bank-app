@@ -169,7 +169,7 @@ class BankApp:
         recipient = input("Please enter the email of the beneficiary: ")
         # check if benefiaciary exists or not
         # open json and read file
-        with open('data.txt') as json_file:
+        with open('mydata.json') as json_file:
             data = json.load(json_file)
         if recipient not in data:
             print("Beneficiary account does not exist, Please try again")
