@@ -80,6 +80,7 @@ class BankApp:
                     self.transfer(email)
                 else:
                     print("Invalid selection, please try again")
+                    self.transaction()
 
             else:
                 print("Incorrect Password, User not Authorized")
