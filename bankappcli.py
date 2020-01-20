@@ -27,12 +27,16 @@ class BankApp:
 
     def createaccount(self):
         # create new account
+        # check if user exists or not
+        # open json and read file
+        with open('mydata.json') as json_file:
+            data = json.load(json_file)
         print("=========================================")
         print("Welcome to VGG Banking App!!! \n kindly enter your details ")
         print("=========================================\n=========================================")
         email = input("type your email address: ").lower()
         if ("@" in email) and ("." in email):
-            if email in self.users.keys():
+            if email in data.keys():
                 print("User already exist ")
             else:
                 password =  input("create password: ")
@@ -50,20 +54,21 @@ class BankApp:
 
     def transaction(self):
         # Authenticate user before performing any transaction
-        print("=========================================")
-        print("Welcome valued customer!!! ")
-        print("=========================================")
-        email = input("input email address: ").lower()
         # check if user exists or not
         # open json and read file
         with open('mydata.json') as json_file:
             data = json.load(json_file)
-        if email not in data:
+        print("=========================================")
+        print("Welcome valued customer!!! ")
+        print("=========================================")
+        email = input("input email address: ").lower()
+        if email not in data.keys():
             print("Sorry you are not authorized! \n Kindly create account")
+            self.createaccount()
         else:
             password = input("Enter password: ")
-            if password == self.users[email]["password"] and self.users[email]["password"] in data:
-                print("Welcom!!!")
+            if password not in data.values():
+                print("Welcome!!!")
                 print("Please proceed to select a transaction type")
                 print("=========================================\n=========================================")
                 print("=========================================")
@@ -81,7 +86,6 @@ class BankApp:
                 else:
                     print("Invalid selection, please try again")
                     self.transaction()
-
             else:
                 print("Incorrect Password, User not Authorized")
                 self.createaccount()
@@ -170,7 +174,7 @@ class BankApp:
         recipient = input("Please enter the email of the beneficiary: ")
         # check if benefiaciary exists or not
         # open json and read file
-        with open('mydata.json') as json_file:
+        with open('data.txt') as json_file:
             data = json.load(json_file)
         if recipient not in data:
             print("Beneficiary account does not exist, Please try again")
@@ -186,7 +190,7 @@ class BankApp:
                     transfer_amount = input("Please enter the amount to transfer")
             except ValueError:
                 print("Invalid amount, please enter figures only")
-                transfer_amount = input("Enter amount to be transferred: ")
+                transfer_amount = input("Enter amount to be transferRED: ")
         current_balance = self.users[email]["balance"]
         # check if there is sufficient balance for the transaction
         if current_balance < valid_amount:
