@@ -42,6 +42,7 @@ class BankApp:
                 print("account has been created!!")
                 print("=========================================")
                 print(self.users)
+                # create a json file to save user data
                 with open('mydata.json', 'w') as f:
                     json.dump(self.users, f)
         else:
