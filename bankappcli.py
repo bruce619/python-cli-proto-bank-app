@@ -1,6 +1,5 @@
 import json
 
-
 class BankApp:
     """A simple command line bank app
 
