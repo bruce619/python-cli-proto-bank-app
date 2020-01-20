@@ -186,7 +186,7 @@ class BankApp:
                     transfer_amount = input("Please enter the amount to transfer")
             except ValueError:
                 print("Invalid amount, please enter figures only")
-                transfer_amount = input("Enter amount to be transferRED: ")
+                transfer_amount = input("Enter amount to be transferred: ")
         current_balance = self.users[email]["balance"]
         # check if there is sufficient balance for the transaction
         if current_balance < valid_amount:
