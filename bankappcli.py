@@ -52,7 +52,7 @@ class BankApp:
                     password = input("create password: ")
                     # initialize the balance to $0.0
                     self.balance = 0.0
-                    self.user_data.append(
+                    data.append(
                             {
 
                                 "email": email,
@@ -64,8 +64,8 @@ class BankApp:
                     print("account has been created!!")
                     print("=========================================")
                     with open('data_file.json', 'w') as json_file:
-                        json.dump(self.user_data, json_file)
-                    print(self.user_data)
+                        json.dump(data, json_file)
+                    print(data)
                     self.transaction()
             else:
                 print("Email is not valid, Please try again")
@@ -100,11 +100,11 @@ class BankApp:
                 if prompt == "1":
                     self.check_balance(input_password)
                 elif prompt == "2":
-                    self.deposit(input_password)
+                    self.deposit(input_email, input_password)
                 elif prompt == "3":
-                    self.withdraw(input_password)
+                    self.withdraw(input_email, input_password)
                 elif prompt == '4':
-                    self.transfer(input_password)
+                    self.transfer(input_email, input_password)
                 elif prompt == 'q':
                     quit()
                 else:
@@ -134,7 +134,7 @@ class BankApp:
                     print("Thank you for banking with us")
                     self.transaction()
 
-    def deposit(self, input_password):
+    def deposit(self, input_email, input_password):
         # Deposit in user account
         print("=========================================")
         print("Deposit")
@@ -164,9 +164,20 @@ class BankApp:
                     print("You have deposited ", valid_amount, "Your new balance is ", new_balance)
                     print("===============================")
                     print("Thank you for banking with us")
+                    data.append(
+                        {
+
+                            "email": input_email,
+                            "password": input_password,
+                            "balance": new_balance,
+
+                        }
+                    )
+                    with open('data_file.json', 'w') as json_file:
+                        json.dump(data, json_file)
                     self.transaction()
 
-    def withdraw(self, input_password):
+    def withdraw(self, input_email, input_password):
         # withdraw from account
         print("=========================================")
         print("Withdraw")
@@ -209,9 +220,20 @@ class BankApp:
                         print("You have withdrawn", withdraw_amount, "Your new balance is ", new_balance)
                         print("===============================")
                         print("Thank you for banking with us")
+                        data.append(
+                            {
+
+                                "email": input_email,
+                                "password": input_password,
+                                "balance": new_balance,
+
+                            }
+                        )
+                        with open('data_file.json', 'w') as json_file:
+                            json.dump(data, json_file)
                         self.transaction()
 
-    def transfer(self, input_password):
+    def transfer(self, input_email, input_password):
         # transfer to another customer
         print("=========================================")
         print("Transfer")
@@ -258,7 +280,26 @@ class BankApp:
                             print("You have transferred", valid_amount, "to", recipient, "Your new balance is ", new_balance)
                             print("===============================")
                             print("Thank you for banking with us")
+                            data.append(
+                                {
+
+                                    "email": input_email,
+                                    "password": input_password,
+                                    "balance": new_balance,
+
+                                }
+                            )
+                            with open('data_file.json', 'w') as json_file:
+                                json.dump(data, json_file)
                             self.transaction()
+
+
+
+
+
+
+
+
 
 
 B = BankApp()
