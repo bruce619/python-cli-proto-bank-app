@@ -77,6 +77,7 @@ class BankApp:
                 json.dump(self.user_data, json_file)
             print("=============================================================================")
             print("Successfully created file. Run app again and press 1 to create your account ")
+            self.createaccount()
 
     def transaction(self):
         # Authenticate user before performing any transaction
