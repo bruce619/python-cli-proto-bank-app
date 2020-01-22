@@ -13,7 +13,7 @@ Steps:
    e.g r'yourpath\data_file.json'
         Also Set a directory where you want the file
        to b created. 
-        e.g r'yourpath\'
+        e.g r"yourpath\"
     
 2. Run the program
    Three options will pop up
