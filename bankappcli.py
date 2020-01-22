@@ -105,7 +105,7 @@ class BankApp:
                 prompt = input("Press 1: Check balance: \nPress 2: Deposit: \nPress 3: Withdraw: \nPress4: Transfer: ")
                 print("                                         \n                                         ")
                 if prompt == "1":
-                    self.check_balance(input_password)
+                    self.check_balance(input_email)
                 elif prompt == "2":
                     self.deposit(input_email, input_password)
                 elif prompt == "3":
@@ -124,7 +124,7 @@ class BankApp:
             print("Sorry you are not authorized! \n Kindly create account")
             self.createaccount()
 
-    def check_balance(self, input_password):
+    def check_balance(self, input_email):
         # Check user balance
         print("=========================================")
         print("Check your account balance")
@@ -132,7 +132,7 @@ class BankApp:
         # read from the json file
         with open('data_file.json', 'r') as json_file:
             data = json.load(json_file)
-        if input_password in ([sub['password'] for sub in data]):
+        if input_email in ([sub['email'] for sub in data]):
             for key, value in enumerate(data):
                 password = (value['password'])
                 if password == input_password:
