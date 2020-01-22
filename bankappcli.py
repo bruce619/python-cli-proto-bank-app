@@ -134,8 +134,8 @@ class BankApp:
             data = json.load(json_file)
         if input_email in ([sub['email'] for sub in data]):
             for key, value in enumerate(data):
-                password = (value['password'])
-                if password == input_password:
+                email = (value['email'])
+                if email == input_email:
                     print("\n Net Available Balance=", value["balance"])
                     print("===============================")
                     print("Thank you for banking with us")
