@@ -214,7 +214,7 @@ class BankApp:
                         print("Would you make a DEPOSIT now? y or n")
                         option = input()
                         if option.lower() == "y":
-                            self.deposit(input_password)
+                            self.deposit(input_email, input_password)
                         elif option.lower() == "n":
                             print("===============================")
                             print("Thank you for banking with us")
@@ -272,7 +272,7 @@ class BankApp:
                         print("Would you make a DEPOSIT now? y or n")
                         option = input()
                         if option.lower() == "y":
-                            self.deposit(input_password)
+                            self.deposit(input_email, input_password)
                         elif option.lower() == "n":
                             print("===============================")
                             print("Thank you for banking with us")
@@ -302,7 +302,7 @@ class BankApp:
                         else:
                             print("===========================================")
                             print("Sorry, ",  recipient, " does not exist, try again")
-                            self.transfer()
+                            self.transfer(input_email, input_password)
 
 
 
