@@ -10,7 +10,10 @@ Functions:
 ==================================================
 Steps:
 1. In the code, change the Json file directory to a directory on your system. 
-   e.g r'yourpath\data_file.json
+   e.g r'yourpath\data_file.json'
+        Also Set a directory where you want the file
+       to b created. 
+        e.g r'yourpath\'
     
 2. Run the program
    Three options will pop up
