@@ -1,6 +1,7 @@
 # Vggbankappcli
 A command line banking software
-Functions
+Functions:
+
 1. deposit
 2. transfer
 3. withdraw
@@ -12,7 +13,7 @@ Steps:
    e.g r'yourpath\data_file.json
     
 2. Run the program
-2. Three options will pop up
+3. Three options will pop up
     option 1: Create an account
     option 2: Transaction
     option q: quit
