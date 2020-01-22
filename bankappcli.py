@@ -33,13 +33,13 @@ class BankApp:
 
     def createaccount(self):
         # Get Current working Directory
-        # currentDirectory = os.getcwd()
+        currentDirectory = os.getcwd()
         # # file name
-        # file_name = r'\data_file'
+        file_name = r'\data_file.json'
         # total path
-        # total_path = currentDirectory + file_name
+        total_path = currentDirectory + file_name
         # check if the json file exists if no, create file
-        if os.path.isfile(r"C:\Users\nueof\PycharmProjects\My project\data_file.json") and os.access(r"C:\Users\nueof\PycharmProjects\My project\data_file.json", os.R_OK):
+        if os.path.isfile(total_path) and os.access(total_path, os.R_OK):
             # checks if file exists
             print("File exists and is readable")
             # create new account
@@ -79,7 +79,7 @@ class BankApp:
         else:
             print("=============================================================================")
             print("Either file is missing or is not readable, creating file...")
-            with io.open(os.path.join(r"C:\Users\nueof\PycharmProjects\My project", 'data_file.json'), 'w') as json_file:
+            with io.open(os.path.join(currentDirectory, 'data_file.json'), 'w') as json_file:
                 json.dump(self.user_data, json_file)
             print("=============================================================================")
             print("Successfully created file. Run app again and press 1 to create your account ")
