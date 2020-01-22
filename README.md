@@ -8,7 +8,10 @@ Functions
 
 ==================================================
 Steps:
-1. Run the program
+1. In the code, change the Json file directory to a directory on your system. 
+   e.g r'yourpath\data_file.json
+    
+2. Run the program
 2. Three options will pop up
     option 1: Create an account
     option 2: Transaction
