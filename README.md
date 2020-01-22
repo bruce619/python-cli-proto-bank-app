@@ -7,7 +7,6 @@ Functions:
 3. withdraw
 4. check balance
 
-==================================================
 Steps:
 In the code, change the Json file directory to a directory on your system. 
 e.g r'yourpath\data_file.json'
