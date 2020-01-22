@@ -95,34 +95,38 @@ class BankApp:
             data = json.load(json_file)
         input_email = input("input email address: ")
         if input_email in ([sub['email'] for sub in data]):
-            input_password = input("password: ")
-            if input_password in ([sub['password'] for sub in data]):
-                print("You are in!!!")
-                print("Please proceed to select a transaction type")
-                print("=========================================\n=========================================")
-                print("=========================================")
-                # show authenticated user transaction options
-                prompt = input("Press 1: Check balance: \nPress 2: Deposit: \nPress 3: Withdraw: \nPress4: Transfer: ")
-                print("                                         \n                                         ")
-                if prompt == "1":
-                    self.check_balance(input_password)
-                elif prompt == "2":
-                    self.deposit(input_email, input_password)
-                elif prompt == "3":
-                    self.withdraw(input_email, input_password)
-                elif prompt == '4':
-                    self.transfer(input_email, input_password)
-                elif prompt == 'q':
-                    quit()
-                else:
-                    print("Invalid selection, please try again")
-                    self.transaction()
-            else:
-                print("Incorrect Password, Try again")
-                self.transaction()
+            for key, value in enumerate(data):
+                email = (value['email'])
+                password = (value['password'])
+                if email == input_email:
+                    input_password = input("password: ")
+                    if password == input_password:
+                        print("You are in!!!")
+                        print("Please proceed to select a transaction type")
+                        print("=========================================\n=========================================")
+                        print("=========================================")
+                        # show authenticated user transaction options
+                        prompt = input("Press 1: Check balance: \nPress 2: Deposit: \nPress 3: Withdraw: \nPress4: Transfer: ")
+                        print("                                         \n                                         ")
+                        if prompt == "1":
+                            self.check_balance(input_password)
+                        elif prompt == "2":
+                            self.deposit(input_email, input_password)
+                        elif prompt == "3":
+                            self.withdraw(input_email, input_password)
+                        elif prompt == '4':
+                            self.transfer(input_email, input_password)
+                        elif prompt == 'q':
+                            quit()
+                        else:
+                            print("Invalid selection, please try again")
+                            self.transaction()
+                    else:
+                        print("Incorrect Password, Try again")
+                        self.transaction()
         else:
-            print("Sorry you are not authorized! \n Kindly create account")
-            self.createaccount()
+                print("Sorry you are not authorized! \n Kindly create account")
+                self.createaccount()
 
     def check_balance(self, input_email):
         # Check user balance
@@ -148,7 +152,7 @@ class BankApp:
         print("=========================================")
         # read from the json file
         with open('data_file.json', 'r') as json_file:
-            data = json.load(json_file)
+            data = json.load(json_file)  # [{}, {}]
         deposit_amount = float(input("Enter amount to be Deposited: "))
         while True:
             try:
