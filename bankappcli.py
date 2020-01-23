@@ -21,15 +21,16 @@ class BankApp:
         """
 
     def __init__(self):
-        self.balance = 0
-        self.user_data = [
-                            {
-                                "email": "example@gmail.com",
-                                "password": "123re",
-                                "balance": 0.0
-                            }
+        self.user_data = []
+        self.current_user = {}
 
-                    ]
+    def write_json(self):
+        with open('data_file.json', 'w') as json_file:
+            json.dump(self.user_data, json_file)
+
+    def read_json(self):
+        with open('data_file.json') as json_file:
+            self.user_data = json.load(json_file)
 
     def createaccount(self):
         # Get Current working Directory
@@ -47,18 +48,16 @@ class BankApp:
             print("Welcome to VGG Banking App!!! \n kindly enter your details ")
             print("=========================================\n=========================================")
             # opens file for reading and wrinting
-            with open('data_file.json', 'r') as json_file:
-                data = json.load(json_file)
+            self.read_json()
             email = input("type your email address: ").lower()
             if ("@" in email) and ("." in email):
-                if email in ([sub['email'] for sub in data]):
+                if email in ([sub['email'] for sub in self.user_data]):
                     print("User already exist ")
                     self.createaccount()
                 else:
                     password = input("create password: ")
                     # initialize the balance to $0.0
-                    self.balance = 0.0
-                    data.append(
+                    self.user_data.append(
                             {
 
                                 "email": email,
@@ -69,9 +68,8 @@ class BankApp:
                             )
                     print("account has been created!!")
                     print("=========================================")
-                    with open('data_file.json', 'w') as json_file:
-                        json.dump(data, json_file)
-                    print(data)
+                    self.write_json()
+                    print(self.user_data)
                     self.transaction()
             else:
                 print("Email is not valid, Please try again")
@@ -79,11 +77,22 @@ class BankApp:
         else:
             print("=============================================================================")
             print("Either file is missing or is not readable, creating file...")
-            with io.open(os.path.join(currentDirectory, 'data_file.json'), 'w') as json_file:
-                json.dump(self.user_data, json_file)
+            self.write_json()
             print("=============================================================================")
             print("Successfully created file. Run app again and press 1 to create your account ")
             self.createaccount()
+
+    def login_user(self, email, password):
+        for i in self.user_data:
+            if email == i["email"] and password == i["password"]:
+                return i
+        return False
+
+    def get_user(self, email):
+        for i in self.user_data:
+            if email == i["email"]:
+                return i
+        return False
 
     def transaction(self):
         # Authenticate user before performing any transaction
@@ -91,227 +100,170 @@ class BankApp:
         print("Welcome valued customer!!! Perform transactions here ")
         print("=========================================")
         # read from the json file
-        with open('data_file.json', 'r') as json_file:
-            data = json.load(json_file)
-        input_email = input("input email address: ")
-        if input_email in ([sub['email'] for sub in data]):
-            for key, value in enumerate(data):
-                email = (value['email'])
-                password = (value['password'])
-                if email == input_email:
-                    input_password = input("password: ")
-                    if password == input_password:
-                        print("You are in!!!")
-                        print("Please proceed to select a transaction type")
-                        print("=========================================\n=========================================")
-                        print("=========================================")
-                        # show authenticated user transaction options
-                        prompt = input("Press 1: Check balance: \nPress 2: Deposit: \nPress 3: Withdraw: \nPress4: Transfer: ")
-                        print("                                         \n                                         ")
-                        if prompt == "1":
-                            self.check_balance(input_email, input_password)
-                        elif prompt == "2":
-                            self.deposit(input_email, input_password)
-                        elif prompt == "3":
-                            self.withdraw(input_email, input_password)
-                        elif prompt == '4':
-                            self.transfer(input_email, input_password)
-                        elif prompt == 'q':
-                            quit()
-                        else:
-                            print("Invalid selection, please try again")
-                            self.transaction()
-                    else:
-                        print("Incorrect Password, Try again")
-                        self.transaction()
-        else:
-                print("Sorry you are not authorized! \n Kindly create account")
-                self.createaccount()
+        self.read_json()
 
-    def check_balance(self, input_email, input_password):
+        input_email = input("input email address: ")
+        input_password = input("password: ")
+        self.current_user = self.login_user(input_email, input_password)
+
+        if self.current_user:
+            print("You are in!!!")
+            print("Please proceed to select a transaction type")
+            print("=========================================\n=========================================")
+            print("=========================================")
+            # show authenticated user transaction options
+            prompt = input("Press 1: Check balance: \nPress 2: Deposit: \nPress 3: Withdraw: \nPress4: Transfer: ")
+            print("                                         \n                                         ")
+            if prompt == "1":
+                self.check_balance()
+            elif prompt == "2":
+                self.deposit()
+            elif prompt == "3":
+                self.withdraw()
+            elif prompt == '4':
+                self.transfer()
+            elif prompt == 'q':
+                quit()
+            else:
+                print("Invalid selection, please try again")
+                self.transaction()
+        else:
+            print("Incorrect email or/and Password, Try again")
+            retry = input("Press 1: To try again: \nPress 2: create accoubt: ")
+            if retry == '1':
+                self.transaction()
+            elif retry == '2':
+                self.createaccount()
+            else:
+                print("Invalid response")
+                quit()
+
+    def check_balance(self):
         # Check user balance
         print("=========================================")
         print("Check your account balance")
         print("=========================================")
-        # read from the json file
-        with open('data_file.json', 'r') as json_file:
-            data = json.load(json_file)
-        for key, value in enumerate(data):
-            email = (value['email'])
-            password = (value['password'])
-            if email == input_email:
-                if password == input_password:
-                    print("\n Net Available Balance=", value["balance"])
-                    print("===============================")
-                    print("Thank you for banking with us")
-                    self.transaction()
+        print("Checking your balance.... ")
+        print("\n Net Available Balance=", self.current_user["balance"])
+        print("===============================")
+        print("Thank you for banking with us")
+        self.transaction()
 
-    def deposit(self, input_email, input_password):
+    def deposit(self):
         # Deposit in user account
         print("=========================================")
         print("Deposit")
         print("=========================================")
         # read from the json file
-        with open('data_file.json', 'r') as json_file:
-            data = json.load(json_file)  # [{}, {}]
-        deposit_amount = float(input("Enter amount to be Deposited: "))
-        while True:
-            try:
-                valid_amount = float(deposit_amount)
-                if valid_amount > 0.0:
-                    break
-                else:
-                    print("Invalid amount, please enter figures only")
-                    deposit_amount = input("Please Enter an amount you want to deposit")
-            except ValueError:
+        deposit_amount = input("Enter amount to be Deposited: ")
+        try:
+            valid_amount = float(deposit_amount)
+            if valid_amount <= 0.0:
                 print("Invalid amount, please enter figures only")
-                deposit_amount = float(input("Enter amount to be Deposited: "))
-        if input_password in ([sub['password'] for sub in data]):
-            for key, value in enumerate(data):
-                password = (value['password'])
-                if password == input_password:
-                    current_balance = value["balance"]
-                    value["balance"] = current_balance + valid_amount
-                    new_balance = value["balance"]
-                    print("You have deposited ", valid_amount, "Your new balance is ", new_balance)
-                    print("===============================")
-                    print("Thank you for banking with us")
-                    data.append(
-                        {
+                self.deposit()
+                return
+        except ValueError:
+            print("Invalid amount, please enter figures only")
+            self.deposit()
+            return
 
-                            "email": input_email,
-                            "password": input_password,
-                            "balance": new_balance,
+        self.current_user["balance"] += valid_amount
+        new_balance = self.current_user["balance"]
+        print("You have deposited ", valid_amount, "Your new balance is ", new_balance)
+        print("===============================")
+        print("Thank you for banking with us")
+        self.write_json()
+        self.transaction()
 
-                        }
-                    )
-                    with open('data_file.json', 'w') as json_file:
-                        json.dump(data, json_file)
-                    self.transaction()
-
-    def withdraw(self, input_email, input_password):
+    def withdraw(self):
         # withdraw from account
         print("=========================================")
         print("Withdraw")
         print("=========================================")
         # read the json file
-        with open('data_file.json', 'r') as json_file:
-            data = json.load(json_file)
-        withdraw_amount = float(input("Enter amount to be Withdrawn: "))
+        withdraw_amount = (input("Enter amount to be Withdrawn: "))
         while True:
             try:
                 valid_withdrawal_amount = float(withdraw_amount)
-                if valid_withdrawal_amount > 0.0:
-                    break
-                else:
+                if valid_withdrawal_amount <= 0.0:
                     print("Invalid amount, please enter figures only")
-                    withdraw_amount = input("Please enter an amount to withdraw")
+                    self.withdraw()
+                    return
             except ValueError:
                 print("Invalid amount, please enter figures only")
-                withdraw_amount = input("Please enter an amount to withdraw")
-        if input_password in ([sub['password'] for sub in data]):
-            for key, value in enumerate(data):
-                password = (value['password'])
-                if password == input_password:
-                    current_balance = value["balance"]
-                    if current_balance < valid_withdrawal_amount:
-                        print("Insufficient funds, your current balance is", current_balance)
-                        print("Would you make a DEPOSIT now? y or n")
-                        option = input()
-                        if option.lower() == "y":
-                            self.deposit(input_email, input_password)
-                        elif option.lower() == "n":
-                            print("===============================")
-                            print("Thank you for banking with us")
-                            quit()
-                        else:
-                            print("Invalid selection")
-                    else:
-                        value["balance"] = value["balance"]
-                        new_balance = value["balance"]
-                        print("You have withdrawn", withdraw_amount, "Your new balance is ", new_balance)
-                        print("===============================")
-                        print("Thank you for banking with us")
-                        data.append(
-                            {
+                self.withdraw()
+                return
 
-                                "email": input_email,
-                                "password": input_password,
-                                "balance": new_balance,
+            current_balance = self.current_user["balance"]
+            if current_balance < valid_withdrawal_amount:
+                print("Insufficient funds, your current balance is", current_balance)
+                print("Would you make a DEPOSIT now? y or n")
+                option = input()
+                if option.lower() == "y":
+                    self.deposit()
+                elif option.lower() == "n":
+                    print("===============================")
+                    print("Thank you for banking with us")
+                    quit()
+                else:
+                    print("Invalid selection")
+            else:
+                self.current_user["balance"] -= valid_withdrawal_amount
+                new_balance = self.current_user["balance"]
+                print("You have withdrawn", withdraw_amount, "Your new balance is ", new_balance)
+                print("===============================")
+                print("Thank you for banking with us")
+                self.write_json()
+                self.transaction()
 
-                            }
-                        )
-                        with open('data_file.json', 'w') as json_file:
-                            json.dump(data, json_file)
-                        self.transaction()
-
-    def transfer(self, input_email, input_password):
+    def transfer(self):
         # transfer to another customer
         print("=========================================")
         print("Transfer")
         print("=========================================")
-        # check if benefiaciary exists or not
-        # open json and read file
-        with open('data_file.json', 'r') as json_file:
-            data = json.load(json_file)
-        transfer_amount = float(input("Enter amount to be Transferred: "))
+        transfer_amount = (input("Enter amount to be Transferred: "))
         while True:
             try:
                 valid_amount = float(transfer_amount)
-                if valid_amount > 0.0:
-                    break
-                else:
+                if valid_amount <= 0.0:
                     print("Invalid amount, please enter figures only")
-                    transfer_amount = input("Please enter the amount to transfer")
+                    self.transfer()
+                    return
             except ValueError:
                 print("Invalid amount, please enter figures only")
-                transfer_amount = input("Enter amount to be transferred: ")
-        if input_password in ([sub['password'] for sub in data]):
-            for key, value in enumerate(data):
-                password = (value['password'])
-                if password == input_password:
-                    current_balance = value["balance"]
-                    # check if there is sufficient balance for the transaction
-                    if current_balance < valid_amount:
-                        print("Insufficient funds, your current balance is", current_balance)
-                        print("Would you make a DEPOSIT now? y or n")
-                        option = input()
-                        if option.lower() == "y":
-                            self.deposit(input_email, input_password)
-                        elif option.lower() == "n":
-                            print("===============================")
-                            print("Thank you for banking with us")
-                            quit()
-                        else:
-                            print("Invalid selection")
-                    else:
-                        recipient = input("Please enter the email of the beneficiary: ")
-                        if recipient in ([sub['email'] for sub in data]):
-                            value["balance"] = value["balance"] - valid_amount
-                            new_balance = value['balance']
-                            print("You have transferred", valid_amount, "to", recipient, "Your new balance is ", new_balance)
-                            print("===============================")
-                            print("Thank you for banking with us")
-                            data.append(
-                                {
+                self.transfer()
+                return
 
-                                    "email": input_email,
-                                    "password": input_password,
-                                    "balance": new_balance,
-
-                                }
-                            )
-                            with open('data_file.json', 'w') as json_file:
-                                json.dump(data, json_file)
-                            self.transaction()
-                        else:
-                            print("===========================================")
-                            print("Sorry, ",  recipient, " does not exist, try again")
-                            self.transfer(input_email, input_password)
-
-
-
-
+            current_balance = self.current_user["balance"]
+            # check if there is sufficient balance for the transaction
+            if current_balance < valid_amount:
+                print("Insufficient funds, your current balance is", current_balance)
+                print("Would you make a DEPOSIT now? y or n")
+                option = input()
+                if option.lower() == "y":
+                    self.deposit()
+                elif option.lower() == "n":
+                    print("===============================")
+                    print("Thank you for banking with us")
+                    quit()
+                else:
+                    print("Invalid selection")
+            else:
+                recipient = input("Please enter the email of the beneficiary: ")
+                receiver = self.get_user(recipient)
+                if receiver:
+                    self.current_user["balance"] -= valid_amount
+                    new_balance = self.current_user['balance']
+                    print("You have transferred", valid_amount, "to", recipient, "Your new balance is ", new_balance)
+                    print("===============================")
+                    print("Thank you for banking with us")
+                    receiver["balance"] += valid_amount
+                    self.write_json()
+                    self.transaction()
+                else:
+                    print("===========================================")
+                    print("Sorry, ",  recipient, " does not exist, try again")
+                    self.transfer()
 
 
 
