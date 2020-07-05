@@ -1,6 +1,6 @@
-import io
 import json
 import os
+
 
 class BankApp:
     """A simple command line bank app
@@ -45,7 +45,7 @@ class BankApp:
             print("File exists and is readable")
             # create new account
             print("=========================================")
-            print("Welcome to VGG Banking App!!! \n kindly enter your details ")
+            print("Welcome to VGG Banking App!!! \nkindly enter your details ")
             print("=========================================\n=========================================")
             # opens file for reading and wrinting
             self.read_json()
@@ -55,22 +55,33 @@ class BankApp:
                     print("User already exist ")
                     self.createaccount()
                 else:
-                    password = input("create password: ")
-                    # initialize the balance to $0.0
-                    self.user_data.append(
-                            {
+                    pins = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+                    password = input("input pin: ")
+                    while len(password) == 4:
+                        if (password[0] in pins) and (password[1] in pins) and (password[2] in pins) and (password[3] in pins):
+                            # initialize the balance to $0.0
+                            self.user_data.append(
+                                    {
 
-                                "email": email,
-                                "password": password,
-                                "balance": 0.0,
+                                        "email": email,
+                                        "password": password,
+                                        "balance": 0.0,
 
-                            }
-                            )
-                    print("account has been created!!")
-                    print("=========================================")
-                    self.write_json()
-                    print(self.user_data)
-                    self.transaction()
+                                    }
+                                    )
+                            print("account has been created!!")
+                            print("=========================================")
+                            self.write_json()
+                            print(self.user_data)
+                            self.transaction()
+                            break
+                        else:
+                            print("Invalid Input, Input must all be digits")
+                            self.createaccount()
+                            break
+                    else:
+                        print("Pin is not valid, please input a 4 digit Pin")
+                        self.createaccount()
             else:
                 print("Email is not valid, Please try again")
                 self.createaccount()
@@ -79,7 +90,7 @@ class BankApp:
             print("Either file is missing or is not readable, creating file...")
             self.write_json()
             print("=============================================================================")
-            print("Successfully created file. Run app again and press 1 to create your account ")
+            print("Successfully created file. Press 1 to create your account ")
             self.createaccount()
 
     def login_user(self, email, password):
@@ -129,7 +140,7 @@ class BankApp:
                 self.transaction()
         else:
             print("Incorrect email or/and Password, Try again")
-            retry = input("Press 1: To try again: \nPress 2: create accoubt: ")
+            retry = input("Press 1: To try again: \nPress 2: create account: ")
             if retry == '1':
                 self.transaction()
             elif retry == '2':
@@ -266,20 +277,21 @@ class BankApp:
                     self.transfer()
 
 
-
-
-
-
 B = BankApp()
 
-
-prompt = input("Press 1: Create Account \nPress 2: Transaction \nPress q: to quit ")
+prompt = input("""1: Create Account: 
+2: Transaction: 
+3: Quit: 
+""")
 while True:
     if prompt == "1" or prompt == "2" or prompt == "q":
         break
     else:
         print("Invalid selection")
-        prompt = input("Press 1: Create Account \nPress 2: Transaction \nPress q to quit ")
+        prompt = input("""1: Create Account: 
+        2: Transaction: 
+        3: Quit: 
+        """)
 if prompt == "1":
     B.createaccount()
 elif prompt == "2":

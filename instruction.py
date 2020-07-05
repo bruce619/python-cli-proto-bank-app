@@ -1,4 +1,4 @@
-# Build a command-line Banking Application with the following functionalities:
+# Build a command-line Banking Application with the following functionality:
 
 # 1. Application starts with a prompt to the user with the following options:
 #   Press 1: create account
