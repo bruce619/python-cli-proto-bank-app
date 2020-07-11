@@ -10,34 +10,35 @@ def main():
         print('passed argument :: {}'.format(arg))
 
     bank = BankApp()
-
     prompt = input("""
     ============================
-    1: Create Account: 
+    Press 1: Create Account: 
     ============================
-    2: Transaction: 
+    Press 2: Transaction: 
     ============================
-    q: Quit: 
-    """)
+    Press q: Quit: 
+    """).lower()
+
     while True:
-        if prompt == "1" or prompt == "2" or prompt == "q":
+        if prompt == "1":
+            bank.createaccount()
+            break
+        elif prompt == '2':
+            bank.transaction()
+            break
+        elif prompt == 'q':
+            print("Thank you, Goodbye!!!")
+            quit()
             break
         else:
             print("Invalid selection")
             prompt = input("""
             ===========================
-            1: Create Account: 
-            2: Transaction: 
-            q: Quit: 
+            Press 1: Create Account: 
+            Press 2: Transaction: 
+            Press q: Quit: 
             ===========================
             """)
-    if prompt == "1":
-        bank.createaccount()
-    elif prompt == "2":
-        bank.transaction()
-    elif prompt == "q":
-        print("Thank you, Goodbye!!!")
-        quit()
 
 
 if __name__ == '__main__':

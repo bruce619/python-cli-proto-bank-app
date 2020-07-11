@@ -2,6 +2,10 @@ import json
 import os
 
 
+# Specify the file name
+file = 'myfile.json'
+
+
 class BankApp:
     """A simple command line bank app
 
@@ -25,24 +29,21 @@ class BankApp:
         self.current_user = {}
 
     def write_json(self):
-        with open('data_file.json', 'w') as json_file:
+        with open(os.path.join(os.path.expanduser('~'), 'Documents', file), 'w') as json_file:
             json.dump(self.user_data, json_file)
 
     def read_json(self):
-        with open('data_file.json') as json_file:
+        with open(os.path.join(os.path.expanduser('~'), 'Documents', file)) as json_file:
             self.user_data = json.load(json_file)
 
     def createaccount(self):
-        # Get Current working Directory
-        currentDirectory = os.getcwd()
-        # # file name
-        file_name = r'\data_file.json'
-        # total path
-        total_path = currentDirectory + file_name
-        # check if the json file exists if no, create file
-        if os.path.isfile(total_path) and os.access(total_path, os.R_OK):
+        if os.path.isfile(os.path.join(os.path.expanduser('~'), 'Documents', file)):
             # checks if file exists
-            print("File exists and is readable")
+            print("""
+            =========================================
+            File exists and is readable
+            =========================================
+            """)
             # create new account
             print("""
             =========================================
@@ -53,14 +54,20 @@ class BankApp:
             """)
             # opens file for reading and wrinting
             self.read_json()
-            email = input("type your email address: ").lower()
+            email = input("""
+            Create your email address: 
+            """).lower()
             if ("@" in email) and ("." in email):
                 if email in ([sub['email'] for sub in self.user_data]):
-                    print("User already exist ")
+                    print("""
+                    User already exist
+                    """)
                     self.createaccount()
                 else:
                     pins = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-                    password = input("input pin: ")
+                    password = input("""
+                    create your 4 digit pin: 
+                    """)
                     while len(password) == 4:
                         if (password[0] in pins) and (password[1] in pins) and (password[2] in pins) and (password[3] in pins):
                             # initialize the balance to $0.0
@@ -83,14 +90,20 @@ class BankApp:
                             self.transaction()
                             break
                         else:
-                            print("Invalid Input, Input must all be digits")
+                            print("""
+                            Invalid Input, Input must all be digits
+                            """)
                             self.createaccount()
                             break
                     else:
-                        print("Pin is not valid, please input a 4 digit Pin")
+                        print("""
+                        Pin is not valid, please input a 4 digit Pin
+                        """)
                         self.createaccount()
             else:
-                print("Email is not valid, Please try again")
+                print("""
+                Email is not valid, Please try again
+                """)
                 self.createaccount()
         else:
             print("""
@@ -118,60 +131,86 @@ class BankApp:
                 return i
         return False
 
-    def the_current_user(self):
-        input_email = input("input email address: ")
-        input_password = input("password: ")
-        self.current_user = self.login_user(input_email, input_password)
-
-        if self.current_user:
-            print("""
-                    ===========================================
-                    You are in!!!
-                    ===========================================
-                    Please proceed to select a transaction type
-                    ===========================================
-                    """)
-            # show authenticated user transaction options
-            prompt = input("""
-                    Press 1: Check balance: 
-                    Press 2: Deposit: 
-                    Press 3: Withdraw: 
-                    Press4: Transfer:
-                    """)
-            if prompt == "1":
-                self.check_balance()
-            elif prompt == "2":
-                self.deposit()
-            elif prompt == "3":
-                self.withdraw()
-            elif prompt == '4':
-                self.transfer()
-            elif prompt == 'q':
-                quit()
-            else:
-                print("Invalid selection, please try again")
-                self.transaction()
-        else:
-            print("Incorrect email or/and Password, Try again")
-            retry = input("Press 1: To try again: \nPress 2: create an account: ")
-            if retry == '1':
-                self.transaction()
-            elif retry == '2':
-                self.createaccount()
-            else:
-                print("Invalid response")
-                quit()
-
     def transaction(self):
-        # Authenticate user before performing any transaction
-        print("""
-        =========================================
-        Welcome valued customer!!! Perform transactions here 
-        =========================================
-        """)
-        # read from the json file
-        self.read_json()
-        self.the_current_user()
+        if os.path.isfile(os.path.join(os.path.expanduser('~'), 'Documents', file)):
+            # Authenticate user before performing any transaction
+            print("""
+            =========================================
+            Welcome valued customer!!! Perform transactions here 
+            =========================================
+            """)
+            # read from the json file
+            self.read_json()
+
+            input_email = input("""
+            input email address: 
+            """)
+            input_password = input("""
+            password: 
+            """)
+            self.current_user = self.login_user(input_email, input_password)
+
+            if self.current_user:
+                print("""
+                ===========================================
+                You are in!!!
+                ===========================================
+                Please proceed to select a transaction type
+                ===========================================
+                """)
+                # show authenticated user transaction options
+                prompt = input("""
+                Press 1: Check balance: 
+                Press 2: Deposit: 
+                Press 3: Withdraw: 
+                Press 4: Transfer:
+                press q: quit
+                """).lower()
+                if prompt == "1":
+                    self.check_balance()
+                elif prompt == "2":
+                    self.deposit()
+                elif prompt == "3":
+                    self.withdraw()
+                elif prompt == '4':
+                    self.transfer()
+                elif prompt == 'q':
+                    quit()
+                else:
+                    print("""
+                    Invalid selection, please try again
+                    """)
+                    quit()
+            else:
+                print("""
+                Incorrect email or/and Password, Try again
+                """)
+                retry = input("""
+                Press 1: To try again:
+                Press 2: create an account:
+                """).lower()
+                if retry == '1':
+                    self.transaction()
+                elif retry == '2':
+                    self.createaccount()
+                else:
+                    print("""
+                    Invalid response
+                    """)
+                    quit()
+        else:
+            print("""
+           =============================================================================
+           Either file is missing or is not readable, creating file...
+           =============================================================================
+           """)
+            self.write_json()
+            print("""
+                   =============================================================================
+                   Successfully created file. Press 1 to create your account
+                   =============================================================================
+                   """)
+            self.createaccount()
 
     def check_balance(self):
         # Check user balance
@@ -182,14 +221,41 @@ class BankApp:
         Checking your balance....
         =========================================
         """)
-        print("\n Net Available Balance=", self.current_user["balance"])
+        print("""
+        Net Available Balance is {}
+        """.format(self.current_user["balance"]))
         print("""
         =========================================
         Thank you for banking with us
         =========================================
         """)
-
-        self.the_current_user()
+        print("""
+        =========================================
+        Perform another transaction
+        =========================================
+        """)
+        prompt = input("""
+        Press 1: Check balance: 
+        Press 2: Deposit: 
+        Press 3: Withdraw: 
+        Press 4: Transfer:
+        press q: Quit
+        """).lower()
+        if prompt == "1":
+            self.check_balance()
+        elif prompt == "2":
+            self.deposit()
+        elif prompt == "3":
+            self.withdraw()
+        elif prompt == '4':
+            self.transfer()
+        elif prompt == 'q':
+            quit()
+        else:
+            print("""
+            Invalid selection, please try again
+            """)
+            quit()
 
     def deposit(self):
         # Deposit in user account
@@ -199,28 +265,62 @@ class BankApp:
         =========================================
         """)
         # read from the json file
-        deposit_amount = input("Enter amount to be Deposited: ")
+        deposit_amount = input("""
+        Enter amount to be Deposited:
+        """)
         try:
             valid_amount = float(deposit_amount)
             if valid_amount <= 0.0:
-                print("Invalid amount, please enter figures only")
+                print("""
+                Invalid amount, please enter figures only
+                """)
                 self.deposit()
                 return
         except ValueError:
-            print("Invalid amount, please enter figures only")
+            print("""
+            Invalid amount, please enter figures only
+            """)
             self.deposit()
             return
 
         self.current_user["balance"] += valid_amount
         new_balance = self.current_user["balance"]
-        print("You have deposited ", valid_amount, "Your new balance is ", new_balance)
+        print("""
+        You have deposited, {}, Your new balance is, {}
+        """.format(valid_amount, new_balance))
         print("""
         =========================================
         Thank you for banking with us
         =========================================
         """)
         self.write_json()
-        self.the_current_user()
+        print("""
+        =========================================
+        Perform another transaction
+        =========================================
+        """)
+        prompt = input("""
+        Press 1: Check balance: 
+        Press 2: Deposit: 
+        Press 3: Withdraw: 
+        Press 4: Transfer:
+        press q: quit
+        """).lower().lower()
+        if prompt == "1":
+            self.check_balance()
+        elif prompt == "2":
+            self.deposit()
+        elif prompt == "3":
+            self.withdraw()
+        elif prompt == '4':
+            self.transfer()
+        elif prompt == 'q':
+            quit()
+        else:
+            print("""
+            Invalid selection, please try again
+            """)
+            quit()
 
     def withdraw(self):
         # withdraw from account
@@ -230,24 +330,35 @@ class BankApp:
         =========================================
         """)
         # read the json file
-        withdraw_amount = (input("Enter amount to be Withdrawn: "))
+        withdraw_amount = (input("""
+        Enter amount to be Withdrawn:
+        """))
         while True:
             try:
                 valid_withdrawal_amount = float(withdraw_amount)
                 if valid_withdrawal_amount <= 0.0:
-                    print("Invalid amount, please enter figures only")
+                    print("""
+                    Invalid amount, please enter figures only
+                    """)
                     self.withdraw()
                     return
             except ValueError:
-                print("Invalid amount, please enter figures only")
+                print("""
+                Invalid amount, please enter figures only
+                """)
                 self.withdraw()
                 return
 
             current_balance = self.current_user["balance"]
             if current_balance < valid_withdrawal_amount:
-                print("Insufficient funds, your current balance is", current_balance)
-                print("Would you make a DEPOSIT now? y or n")
-                option = input()
+                print("""
+                Insufficient funds, your current balance is {}
+                """.format(current_balance)
+                      )
+                print("""
+                Would you make a DEPOSIT now? y or n
+                """)
+                option = input().lower()
                 if option.lower() == "y":
                     self.deposit()
                 elif option.lower() == "n":
@@ -262,14 +373,42 @@ class BankApp:
             else:
                 self.current_user["balance"] -= valid_withdrawal_amount
                 new_balance = self.current_user["balance"]
-                print("You have withdrawn", withdraw_amount, "Your new balance is ", new_balance)
+                print("""
+                You have withdrawn {} Your new balance is {}
+                """.format(withdraw_amount, new_balance))
                 print("""
                 =========================================
                 Thank you for banking with us
                 =========================================
                 """)
                 self.write_json()
-                self.the_current_user()
+                print("""
+                =========================================
+                Perform another transaction
+                =========================================
+                """)
+                prompt = input("""
+                Press 1: Check balance: 
+                Press 2: Deposit: 
+                Press 3: Withdraw: 
+                Press 4: Transfer:
+                press q: quit
+                """).lower()
+                if prompt == "1":
+                    self.check_balance()
+                elif prompt == "2":
+                    self.deposit()
+                elif prompt == "3":
+                    self.withdraw()
+                elif prompt == '4':
+                    self.transfer()
+                elif prompt == 'q':
+                    quit()
+                else:
+                    print("""
+                    Invalid selection, please try again
+                    """)
+                    quit()
 
     def transfer(self):
         # transfer to another customer
@@ -294,9 +433,13 @@ class BankApp:
             current_balance = self.current_user["balance"]
             # check if there is sufficient balance for the transaction
             if current_balance < valid_amount:
-                print("Insufficient funds, your current balance is", current_balance)
-                print("Would you make a DEPOSIT now? y or n")
-                option = input()
+                print("""
+                Insufficient funds, your current balance is {}
+                """.format(current_balance))
+                print("""
+                Would you make a DEPOSIT now? y or n
+                """)
+                option = input().lower()
                 if option.lower() == "y":
                     self.deposit()
                 elif option.lower() == "n":
@@ -307,14 +450,21 @@ class BankApp:
                     """)
                     quit()
                 else:
-                    print("Invalid selection")
+                    print("""
+                    Invalid selection
+                    """)
             else:
-                recipient = input("Please enter the email of the beneficiary: ")
+                recipient = input("""
+                Please enter the email of the beneficiary:
+                """)
                 receiver = self.get_user(recipient)
                 if receiver:
                     self.current_user["balance"] -= valid_amount
                     new_balance = self.current_user['balance']
-                    print("You have transferred", valid_amount, "to", recipient, "Your new balance is ", new_balance)
+                    print("""
+                    You have transferred {} to {}, Your new balance is {}
+                    """.format(valid_amount, recipient, new_balance)
+                          )
                     print("""
                     =========================================
                     Thank you for banking with us
@@ -324,7 +474,34 @@ class BankApp:
                     self.write_json()
                     self.transaction()
                 else:
-                    print("===========================================")
-                    print("Sorry, ",  recipient, " does not exist, try again")
-                    self.the_current_user()
-
+                    print("""
+                    ===========================================
+                    sorry {} does not exist, try again
+                    """.format(recipient))
+                    print("""
+                    =========================================
+                    Perform another transaction
+                    =========================================
+                    """)
+                    prompt = input("""
+                    Press 1: Check balance: 
+                    Press 2: Deposit: 
+                    Press 3: Withdraw: 
+                    Press 4: Transfer:
+                    press q: quit
+                    """).lower()
+                    if prompt == "1":
+                        self.check_balance()
+                    elif prompt == "2":
+                        self.deposit()
+                    elif prompt == "3":
+                        self.withdraw()
+                    elif prompt == '4':
+                        self.transfer()
+                    elif prompt == 'q':
+                        quit()
+                    else:
+                        print("""
+                        Invalid selection, please try again
+                        """)
+                        quit()
