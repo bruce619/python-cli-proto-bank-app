@@ -14,7 +14,7 @@ def main():
     prompt = input("""
     1: Create Account: 
     2: Transaction: 
-    3: Quit: 
+    q: Quit: 
     """)
     while True:
         if prompt == "1" or prompt == "2" or prompt == "q":
@@ -24,7 +24,7 @@ def main():
             prompt = input("""
             1: Create Account: 
             2: Transaction: 
-            3: Quit: 
+            q: Quit: 
             """)
     if prompt == "1":
         bank.createaccount()
