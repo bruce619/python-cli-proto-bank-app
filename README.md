@@ -10,10 +10,11 @@ Functions:
 Steps:
 1. Download/Clone git repo
 2. Run install.sh in the project directory
-2. Three options will pop up
-3. Option 1: Create an account
-4. Option 2: Transaction
-5. Option q: quit
+3. search for protobankapp.exe on your local machine and run it
+4. Three options will pop up
+5. Option 1: Create an account
+6. Option 2: Transaction
+7. Option q: quit
 
 if user is new, type 1 to an create account.
 1. A json file will be created in the directory the user is in.
