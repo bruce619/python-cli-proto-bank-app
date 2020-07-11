@@ -8,7 +8,8 @@ Functions:
 4. check balance
 
 Steps:
-1. Run install
+1. Download/Clone git repo
+2. Run install.sh in the project directory
 2. Three options will pop up
 3. Option 1: Create an account
 4. Option 2: Transaction
