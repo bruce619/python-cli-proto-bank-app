@@ -472,7 +472,34 @@ class BankApp:
                     """)
                     receiver["balance"] += valid_amount
                     self.write_json()
-                    self.transaction()
+                    print("""
+                    =========================================
+                    Perform another transaction
+                    =========================================
+                    """)
+                    prompt = input("""
+                    Press 1: Check balance: 
+                    Press 2: Deposit: 
+                    Press 3: Withdraw: 
+                    Press 4: Transfer:
+                    press q: quit
+                    """).lower()
+                    if prompt == "1":
+                        self.check_balance()
+                    elif prompt == "2":
+                        self.deposit()
+                    elif prompt == "3":
+                        self.withdraw()
+                    elif prompt == '4':
+                        self.transfer()
+                    elif prompt == 'q':
+                        quit()
+                    else:
+                        print("""
+                        Invalid selection, please try again
+                        """)
+                        quit()
+
                 else:
                     print("""
                     ===========================================
