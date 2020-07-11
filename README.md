@@ -1,5 +1,5 @@
 # Vggbankappcli
-A command line banking software
+A prototype command line interface app
 Functions:
 
 1. deposit
