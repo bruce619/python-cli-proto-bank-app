@@ -12,8 +12,11 @@ def main():
     bank = BankApp()
 
     prompt = input("""
+    ============================
     1: Create Account: 
+    ============================
     2: Transaction: 
+    ============================
     q: Quit: 
     """)
     while True:
@@ -22,9 +25,11 @@ def main():
         else:
             print("Invalid selection")
             prompt = input("""
+            ===========================
             1: Create Account: 
             2: Transaction: 
             q: Quit: 
+            ===========================
             """)
     if prompt == "1":
         bank.createaccount()

@@ -51,7 +51,6 @@ class BankApp:
             kindly enter your details
             =========================================
             """)
-            print("")
             # opens file for reading and wrinting
             self.read_json()
             email = input("type your email address: ").lower()
@@ -74,8 +73,11 @@ class BankApp:
 
                                     }
                                     )
-                            print("account has been created!!")
-                            print("=========================================")
+                            print("""
+                            =========================================
+                            account has been created!!
+                            =========================================
+                            """)
                             self.write_json()
                             print(self.user_data)
                             self.transaction()
@@ -91,11 +93,17 @@ class BankApp:
                 print("Email is not valid, Please try again")
                 self.createaccount()
         else:
-            print("=============================================================================")
-            print("Either file is missing or is not readable, creating file...")
+            print("""
+            =============================================================================
+            Either file is missing or is not readable, creating file...
+            =============================================================================
+            """)
             self.write_json()
-            print("=============================================================================")
-            print("Successfully created file. Press 1 to create your account ")
+            print("""
+            =============================================================================
+            Successfully created file. Press 1 to create your account
+            =============================================================================
+            """)
             self.createaccount()
 
     def login_user(self, email, password):
@@ -125,11 +133,12 @@ class BankApp:
         self.current_user = self.login_user(input_email, input_password)
 
         if self.current_user:
-            print("You are in!!!")
-            print("Please proceed to select a transaction type")
             print("""
-            =========================================
-            =========================================
+            ===========================================
+            You are in!!!
+            ===========================================
+            Please proceed to select a transaction type
+            ===========================================
             """)
             # show authenticated user transaction options
             prompt = input("""
@@ -153,7 +162,7 @@ class BankApp:
                 self.transaction()
         else:
             print("Incorrect email or/and Password, Try again")
-            retry = input("Press 1: To try again: \nPress 2: create account: ")
+            retry = input("Press 1: To try again: \nPress 2: create an account: ")
             if retry == '1':
                 self.transaction()
             elif retry == '2':
