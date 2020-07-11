@@ -21,4 +21,4 @@ if user is new, type 1 to an create account.
 4. if user already exist, type 2 to perform transaction.
 5. user will have to confirm their email and password to go further.
 6. After confirmation, users can perform any transaction
-7. option 3 quits the program.
+7. option q quits the program.
