@@ -44,9 +44,14 @@ class BankApp:
             # checks if file exists
             print("File exists and is readable")
             # create new account
-            print("=========================================")
-            print("Welcome to VGG Banking App!!! \nkindly enter your details ")
-            print("=========================================\n=========================================")
+            print("""
+            =========================================
+            Welcome to VGG Banking App!!! 
+            =========================================
+            kindly enter your details
+            =========================================
+            """)
+            print("")
             # opens file for reading and wrinting
             self.read_json()
             email = input("type your email address: ").lower()
@@ -107,9 +112,11 @@ class BankApp:
 
     def transaction(self):
         # Authenticate user before performing any transaction
-        print("=========================================")
-        print("Welcome valued customer!!! Perform transactions here ")
-        print("=========================================")
+        print("""
+        =========================================
+        Welcome valued customer!!! Perform transactions here 
+        =========================================
+        """)
         # read from the json file
         self.read_json()
 
@@ -120,11 +127,17 @@ class BankApp:
         if self.current_user:
             print("You are in!!!")
             print("Please proceed to select a transaction type")
-            print("=========================================\n=========================================")
-            print("=========================================")
+            print("""
+            =========================================
+            =========================================
+            """)
             # show authenticated user transaction options
-            prompt = input("Press 1: Check balance: \nPress 2: Deposit: \nPress 3: Withdraw: \nPress4: Transfer: ")
-            print("                                         \n                                         ")
+            prompt = input("""
+            Press 1: Check balance: 
+            Press 2: Deposit: 
+            Press 3: Withdraw: 
+            Press4: Transfer:
+            """)
             if prompt == "1":
                 self.check_balance()
             elif prompt == "2":
@@ -151,20 +164,29 @@ class BankApp:
 
     def check_balance(self):
         # Check user balance
-        print("=========================================")
-        print("Check your account balance")
-        print("=========================================")
-        print("Checking your balance.... ")
+        print("""
+        =========================================
+        Check your account balance
+        =========================================
+        Checking your balance....
+        =========================================
+        """)
         print("\n Net Available Balance=", self.current_user["balance"])
-        print("===============================")
-        print("Thank you for banking with us")
+        print("""
+        =========================================
+        Thank you for banking with us
+        =========================================
+        """)
+
         self.transaction()
 
     def deposit(self):
         # Deposit in user account
-        print("=========================================")
-        print("Deposit")
-        print("=========================================")
+        print("""
+        =========================================
+        Deposit
+        =========================================
+        """)
         # read from the json file
         deposit_amount = input("Enter amount to be Deposited: ")
         try:
@@ -181,16 +203,21 @@ class BankApp:
         self.current_user["balance"] += valid_amount
         new_balance = self.current_user["balance"]
         print("You have deposited ", valid_amount, "Your new balance is ", new_balance)
-        print("===============================")
-        print("Thank you for banking with us")
+        print("""
+        =========================================
+        Thank you for banking with us
+        =========================================
+        """)
         self.write_json()
         self.transaction()
 
     def withdraw(self):
         # withdraw from account
-        print("=========================================")
-        print("Withdraw")
-        print("=========================================")
+        print("""
+        =========================================
+        Withdraw
+        =========================================
+        """)
         # read the json file
         withdraw_amount = (input("Enter amount to be Withdrawn: "))
         while True:
@@ -213,8 +240,11 @@ class BankApp:
                 if option.lower() == "y":
                     self.deposit()
                 elif option.lower() == "n":
-                    print("===============================")
-                    print("Thank you for banking with us")
+                    print("""
+                    =========================================
+                    Thank you for banking with us
+                    =========================================
+                    """)
                     quit()
                 else:
                     print("Invalid selection")
@@ -222,16 +252,21 @@ class BankApp:
                 self.current_user["balance"] -= valid_withdrawal_amount
                 new_balance = self.current_user["balance"]
                 print("You have withdrawn", withdraw_amount, "Your new balance is ", new_balance)
-                print("===============================")
-                print("Thank you for banking with us")
+                print("""
+                =========================================
+                Thank you for banking with us
+                =========================================
+                """)
                 self.write_json()
                 self.transaction()
 
     def transfer(self):
         # transfer to another customer
-        print("=========================================")
-        print("Transfer")
-        print("=========================================")
+        print("""
+        =========================================
+        Transfer
+        =========================================
+        """)
         transfer_amount = (input("Enter amount to be Transferred: "))
         while True:
             try:
@@ -254,8 +289,11 @@ class BankApp:
                 if option.lower() == "y":
                     self.deposit()
                 elif option.lower() == "n":
-                    print("===============================")
-                    print("Thank you for banking with us")
+                    print("""
+                    =========================================
+                    Thank you for banking with us
+                    =========================================
+                    """)
                     quit()
                 else:
                     print("Invalid selection")
@@ -266,8 +304,11 @@ class BankApp:
                     self.current_user["balance"] -= valid_amount
                     new_balance = self.current_user['balance']
                     print("You have transferred", valid_amount, "to", recipient, "Your new balance is ", new_balance)
-                    print("===============================")
-                    print("Thank you for banking with us")
+                    print("""
+                    =========================================
+                    Thank you for banking with us
+                    =========================================
+                    """)
                     receiver["balance"] += valid_amount
                     self.write_json()
                     self.transaction()

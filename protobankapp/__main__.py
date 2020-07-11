@@ -11,7 +11,8 @@ def main():
 
     bank = BankApp()
 
-    prompt = input("""1: Create Account: 
+    prompt = input("""
+    1: Create Account: 
     2: Transaction: 
     3: Quit: 
     """)
@@ -20,7 +21,8 @@ def main():
             break
         else:
             print("Invalid selection")
-            prompt = input("""1: Create Account: 
+            prompt = input("""
+            1: Create Account: 
             2: Transaction: 
             3: Quit: 
             """)
