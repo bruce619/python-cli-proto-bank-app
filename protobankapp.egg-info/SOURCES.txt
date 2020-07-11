@@ -1,0 +1,10 @@
+README.md
+setup.py
+protobankapp/__init__.py
+protobankapp/__main__.py
+protobankapp/bankappcli.py
+protobankapp.egg-info/PKG-INFO
+protobankapp.egg-info/SOURCES.txt
+protobankapp.egg-info/dependency_links.txt
+protobankapp.egg-info/entry_points.txt
+protobankapp.egg-info/top_level.txt

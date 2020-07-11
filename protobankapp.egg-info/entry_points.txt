@@ -1,0 +1,3 @@
+[console_scripts]
+protobankapp = protobankapp.__main__:main
+

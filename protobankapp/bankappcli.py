@@ -275,30 +275,3 @@ class BankApp:
                     print("===========================================")
                     print("Sorry, ",  recipient, " does not exist, try again")
                     self.transfer()
-
-
-B = BankApp()
-
-prompt = input("""1: Create Account: 
-2: Transaction: 
-3: Quit: 
-""")
-while True:
-    if prompt == "1" or prompt == "2" or prompt == "q":
-        break
-    else:
-        print("Invalid selection")
-        prompt = input("""1: Create Account: 
-        2: Transaction: 
-        3: Quit: 
-        """)
-if prompt == "1":
-    B.createaccount()
-elif prompt == "2":
-    B.transaction()
-elif prompt == "q":
-    print("Thank you, Goodbye!!!")
-    quit()
-
-if __name__ == '__main__':
-    BankApp()
