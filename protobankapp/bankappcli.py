@@ -118,35 +118,26 @@ class BankApp:
                 return i
         return False
 
-    def transaction(self):
-        # Authenticate user before performing any transaction
-        print("""
-        =========================================
-        Welcome valued customer!!! Perform transactions here 
-        =========================================
-        """)
-        # read from the json file
-        self.read_json()
-
+    def the_current_user(self):
         input_email = input("input email address: ")
         input_password = input("password: ")
         self.current_user = self.login_user(input_email, input_password)
 
         if self.current_user:
             print("""
-            ===========================================
-            You are in!!!
-            ===========================================
-            Please proceed to select a transaction type
-            ===========================================
-            """)
+                    ===========================================
+                    You are in!!!
+                    ===========================================
+                    Please proceed to select a transaction type
+                    ===========================================
+                    """)
             # show authenticated user transaction options
             prompt = input("""
-            Press 1: Check balance: 
-            Press 2: Deposit: 
-            Press 3: Withdraw: 
-            Press4: Transfer:
-            """)
+                    Press 1: Check balance: 
+                    Press 2: Deposit: 
+                    Press 3: Withdraw: 
+                    Press4: Transfer:
+                    """)
             if prompt == "1":
                 self.check_balance()
             elif prompt == "2":
@@ -171,6 +162,17 @@ class BankApp:
                 print("Invalid response")
                 quit()
 
+    def transaction(self):
+        # Authenticate user before performing any transaction
+        print("""
+        =========================================
+        Welcome valued customer!!! Perform transactions here 
+        =========================================
+        """)
+        # read from the json file
+        self.read_json()
+        self.the_current_user()
+
     def check_balance(self):
         # Check user balance
         print("""
@@ -187,7 +189,7 @@ class BankApp:
         =========================================
         """)
 
-        self.transaction()
+        self.the_current_user()
 
     def deposit(self):
         # Deposit in user account
@@ -218,7 +220,7 @@ class BankApp:
         =========================================
         """)
         self.write_json()
-        self.transaction()
+        self.the_current_user()
 
     def withdraw(self):
         # withdraw from account
@@ -267,7 +269,7 @@ class BankApp:
                 =========================================
                 """)
                 self.write_json()
-                self.transaction()
+                self.the_current_user()
 
     def transfer(self):
         # transfer to another customer
@@ -324,4 +326,5 @@ class BankApp:
                 else:
                     print("===========================================")
                     print("Sorry, ",  recipient, " does not exist, try again")
-                    self.transfer()
+                    self.the_current_user()
+
