@@ -21,7 +21,7 @@ def main():
 
     while True:
         if prompt == "1":
-            bank.createaccount()
+            bank.create_account()
             break
         elif prompt == '2':
             bank.transaction()

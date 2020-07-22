@@ -30,13 +30,13 @@ class BankApp:
 
     def write_json(self):
         with open(os.path.join(os.path.expanduser('~'), 'Documents', file), 'w') as json_file:
-            json.dump(self.user_data, json_file)
+            json.dump(self.user_data, json_file, indent=2)
 
     def read_json(self):
-        with open(os.path.join(os.path.expanduser('~'), 'Documents', file)) as json_file:
+        with open(os.path.join(os.path.expanduser('~'), 'Documents', file), 'r') as json_file:
             self.user_data = json.load(json_file)
 
-    def createaccount(self):
+    def create_account(self):
         if os.path.isfile(os.path.join(os.path.expanduser('~'), 'Documents', file)):
             # checks if file exists
             print("""
@@ -62,7 +62,7 @@ class BankApp:
                     print("""
                     User already exist
                     """)
-                    self.createaccount()
+                    self.create_account()
                 else:
                     pins = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
                     password = input("""
@@ -93,18 +93,18 @@ class BankApp:
                             print("""
                             Invalid Input, Input must all be digits
                             """)
-                            self.createaccount()
+                            self.create_account()
                             break
                     else:
                         print("""
                         Pin is not valid, please input a 4 digit Pin
                         """)
-                        self.createaccount()
+                        self.create_account()
             else:
                 print("""
                 Email is not valid, Please try again
                 """)
-                self.createaccount()
+                self.create_account()
         else:
             print("""
             =============================================================================
@@ -117,7 +117,7 @@ class BankApp:
             Successfully created file. Press 1 to create your account
             =============================================================================
             """)
-            self.createaccount()
+            self.create_account()
 
     def login_user(self, email, password):
         for i in self.user_data:
@@ -192,7 +192,7 @@ class BankApp:
                 if retry == '1':
                     self.transaction()
                 elif retry == '2':
-                    self.createaccount()
+                    self.create_account()
                 else:
                     print("""
                     Invalid response
@@ -210,7 +210,7 @@ class BankApp:
                    Successfully created file. Press 1 to create your account
                    =============================================================================
                    """)
-            self.createaccount()
+            self.create_account()
 
     def check_balance(self):
         # Check user balance
