@@ -1,4 +1,4 @@
-# Vggbankappcli
+# Python-CLI-Proto-Bank-App
 A prototype command line interface app
 Functions:
 
