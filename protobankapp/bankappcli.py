@@ -1,6 +1,8 @@
 import json
 import os
-
+import re
+from card import auth_user_menu,error_selection,re_do_menu
+from check_email import ama,nums
 
 # Specify the file name
 file = 'myfile.json'
@@ -57,19 +59,17 @@ class BankApp:
             email = input("""
             Create your email address: 
             """).lower()
-            if ("@" in email) and ("." in email):
+            if (ama(email)):#USE REGULAR EXPRESSION
                 if email in ([sub['email'] for sub in self.user_data]):
-                    print("""
-                    User already exist
-                    """)
+                    error_selection("email1")
                     self.create_account()
                 else:
-                    pins = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+                   
                     password = input("""
                     create your 4 digit pin: 
                     """)
                     while len(password) == 4:
-                        if (password[0] in pins) and (password[1] in pins) and (password[2] in pins) and (password[3] in pins):
+                        if (nums(password)):
                             # initialize the balance to $0.0
                             self.user_data.append(
                                     {
@@ -90,20 +90,14 @@ class BankApp:
                             self.transaction()
                             break
                         else:
-                            print("""
-                            Invalid Input, Input must all be digits
-                            """)
+                            error_selection("val")
                             self.create_account()
                             break
                     else:
-                        print("""
-                        Pin is not valid, please input a 4 digit Pin
-                        """)
+                        error_selection("pin")
                         self.create_account()
             else:
-                print("""
-                Email is not valid, Please try again
-                """)
+                error_selection("eval")
                 self.create_account()
         else:
             print("""
@@ -159,13 +153,7 @@ class BankApp:
                 ===========================================
                 """)
                 # show authenticated user transaction options
-                prompt = input("""
-                Press 1: Check balance: 
-                Press 2: Deposit: 
-                Press 3: Withdraw: 
-                Press 4: Transfer:
-                press q: quit
-                """).lower()
+                prompt = auth_user_menu()
                 if prompt == "1":
                     self.check_balance()
                 elif prompt == "2":
@@ -177,18 +165,13 @@ class BankApp:
                 elif prompt == 'q':
                     quit()
                 else:
-                    print("""
-                    Invalid selection, please try again
-                    """)
+                    error_selection("sel")
                     quit()
             else:
                 print("""
                 Incorrect email or/and Password, Try again
                 """)
-                retry = input("""
-                Press 1: To try again:
-                Press 2: create an account:
-                """).lower()
+                retry = re_do_menu()
                 if retry == '1':
                     self.transaction()
                 elif retry == '2':
@@ -234,13 +217,7 @@ class BankApp:
         Perform another transaction
         =========================================
         """)
-        prompt = input("""
-        Press 1: Check balance: 
-        Press 2: Deposit: 
-        Press 3: Withdraw: 
-        Press 4: Transfer:
-        press q: Quit
-        """).lower()
+        prompt = auth_user_menu()
         if prompt == "1":
             self.check_balance()
         elif prompt == "2":
@@ -252,9 +229,7 @@ class BankApp:
         elif prompt == 'q':
             quit()
         else:
-            print("""
-            Invalid selection, please try again
-            """)
+            error_selection("sel")
             quit()
 
     def deposit(self):
@@ -271,15 +246,11 @@ class BankApp:
         try:
             valid_amount = float(deposit_amount)
             if valid_amount <= 0.0:
-                print("""
-                Invalid amount, please enter figures only
-                """)
+                error_selection("amo")
                 self.deposit()
                 return
         except ValueError:
-            print("""
-            Invalid amount, please enter figures only
-            """)
+            error_selection("amo")
             self.deposit()
             return
 
@@ -299,13 +270,7 @@ class BankApp:
         Perform another transaction
         =========================================
         """)
-        prompt = input("""
-        Press 1: Check balance: 
-        Press 2: Deposit: 
-        Press 3: Withdraw: 
-        Press 4: Transfer:
-        press q: quit
-        """).lower().lower()
+        prompt = auth_user_menu()
         if prompt == "1":
             self.check_balance()
         elif prompt == "2":
@@ -317,9 +282,7 @@ class BankApp:
         elif prompt == 'q':
             quit()
         else:
-            print("""
-            Invalid selection, please try again
-            """)
+            error_selection("sel")
             quit()
 
     def withdraw(self):
@@ -337,15 +300,11 @@ class BankApp:
             try:
                 valid_withdrawal_amount = float(withdraw_amount)
                 if valid_withdrawal_amount <= 0.0:
-                    print("""
-                    Invalid amount, please enter figures only
-                    """)
+                    error_selection("amo")
                     self.withdraw()
                     return
             except ValueError:
-                print("""
-                Invalid amount, please enter figures only
-                """)
+                error_selection("amo")
                 self.withdraw()
                 return
 
@@ -387,13 +346,7 @@ class BankApp:
                 Perform another transaction
                 =========================================
                 """)
-                prompt = input("""
-                Press 1: Check balance: 
-                Press 2: Deposit: 
-                Press 3: Withdraw: 
-                Press 4: Transfer:
-                press q: quit
-                """).lower()
+                prompt = auth_user_menu()
                 if prompt == "1":
                     self.check_balance()
                 elif prompt == "2":
@@ -405,9 +358,7 @@ class BankApp:
                 elif prompt == 'q':
                     quit()
                 else:
-                    print("""
-                    Invalid selection, please try again
-                    """)
+                    error_selection("sel")
                     quit()
 
     def transfer(self):
@@ -450,9 +401,7 @@ class BankApp:
                     """)
                     quit()
                 else:
-                    print("""
-                    Invalid selection
-                    """)
+                    error_selection("sel")
             else:
                 recipient = input("""
                 Please enter the email of the beneficiary:
@@ -477,13 +426,7 @@ class BankApp:
                     Perform another transaction
                     =========================================
                     """)
-                    prompt = input("""
-                    Press 1: Check balance: 
-                    Press 2: Deposit: 
-                    Press 3: Withdraw: 
-                    Press 4: Transfer:
-                    press q: quit
-                    """).lower()
+                    prompt = auth_user_menu()
                     if prompt == "1":
                         self.check_balance()
                     elif prompt == "2":
@@ -495,9 +438,7 @@ class BankApp:
                     elif prompt == 'q':
                         quit()
                     else:
-                        print("""
-                        Invalid selection, please try again
-                        """)
+                        error_selection("sel")
                         quit()
 
                 else:
@@ -510,13 +451,7 @@ class BankApp:
                     Perform another transaction
                     =========================================
                     """)
-                    prompt = input("""
-                    Press 1: Check balance: 
-                    Press 2: Deposit: 
-                    Press 3: Withdraw: 
-                    Press 4: Transfer:
-                    press q: quit
-                    """).lower()
+                    prompt = auth_user_menu()
                     if prompt == "1":
                         self.check_balance()
                     elif prompt == "2":
@@ -528,7 +463,5 @@ class BankApp:
                     elif prompt == 'q':
                         quit()
                     else:
-                        print("""
-                        Invalid selection, please try again
-                        """)
+                        error_selection("sel")
                         quit()

@@ -1,5 +1,7 @@
 import sys
-from .bankappcli import BankApp
+
+from bankappcli import BankApp
+from card import main_menu
 
 
 def main():
@@ -10,14 +12,7 @@ def main():
         print('passed argument :: {}'.format(arg))
 
     bank = BankApp()
-    prompt = input("""
-    ============================
-    Press 1: Create Account: 
-    ============================
-    Press 2: Transaction: 
-    ============================
-    Press q: Quit: 
-    """).lower()
+    prompt = main_menu()
 
     while True:
         if prompt == "1":
@@ -30,15 +25,12 @@ def main():
             print("Thank you, Goodbye!!!")
             quit()
             break
+        elif prompt == "5":
+            bank.list_registered_account()
         else:
             print("Invalid selection")
-            prompt = input("""
-            ===========================
-            Press 1: Create Account: 
-            Press 2: Transaction: 
-            Press q: Quit: 
-            ===========================
-            """)
+            prompt = main_menu()
+            
 
 
 if __name__ == '__main__':
